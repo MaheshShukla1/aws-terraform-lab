@@ -14,3 +14,14 @@ resource "aws_s3_bucket_versioning" "my_bucket_versioning" {
    status = "Enabled"
  }
 }
+
+resource "aws_s3_bucket" "log_bucket" {
+  bucket = "${var.bucket_name}-logs"
+  force_destroy = true  
+}
+
+resource "aws_s3_bucket_logging" "my_bucket_logging" {
+  bucket = aws_s3_bucket.my_bucket.id
+  target_bucket = aws_s3_bucket.log_bucket.id
+  target_prefix = "log/"
+}
